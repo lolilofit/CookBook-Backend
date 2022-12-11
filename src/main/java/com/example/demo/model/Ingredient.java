@@ -9,6 +9,10 @@ public class Ingredient {
 
     }
 
+    public Ingredient(String jsonString) {
+
+    }
+
     public Ingredient(String name, float amount, String unit) {
         this.name = name;
         this.amount = amount;

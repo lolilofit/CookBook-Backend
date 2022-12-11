@@ -1,0 +1,5 @@
+FROM yandex/clickhouse-server:latest
+COPY full_dataset.csv /etc/clickhouse-server/full_dataset.csv
+EXPOSE 8123
+#RUN clickhouse-client --query "CREATE TABLE recipes(title String, ingredients Array(String), directions Array(String), link String, source LowCardinality(String), NER Array(String)) ENGINE = MergeTree ORDER BY title;"
+#RUN clickhouse-client --query "INSERT INTO recipes SELECT title, JSONExtract(ingredients, 'Array(String)'), JSONExtract(directions, 'Array(String)'), link, source, JSONExtract(NER, 'Array(String)') FROM input('num UInt32, title String, ingredients String, directions String, link String, source LowCardinality(String), NER String') FORMAT CSVWithNames" --input_format_with_names_use_header 0 --format_csv_allow_single_quote 0 --input_format_allow_errors_num 10 < full_dataset.csv
