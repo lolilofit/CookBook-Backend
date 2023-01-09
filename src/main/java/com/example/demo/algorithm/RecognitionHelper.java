@@ -11,16 +11,16 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class RecognitionHelper implements IRecognitionHelper {
-    private static final String url = "http://localhost:8081/food";
+    private static final String url = "http://localhost:5000/food";
 
     @Override
     public ExistingIngredients recognizeIngredients(byte[] image) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders header = new HttpHeaders();
-//        header.setContentType(MediaType.IMAGE_PNG);
-//        HttpEntity<byte[]> entity = new HttpEntity<>(image, header);
-//        HttpEntity<ExistingIngredients> response = restTemplate.exchange(url, HttpMethod.POST, entity, ExistingIngredients.class);
-//        return response.getBody();
-        return new ExistingIngredients(new String[] {"butter", "banana", "milk"});
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.IMAGE_PNG);
+        HttpEntity<byte[]> entity = new HttpEntity<>(image, header);
+        HttpEntity<ExistingIngredients> response = restTemplate.exchange(url, HttpMethod.POST, entity, ExistingIngredients.class);
+        return response.getBody();
+//        return new ExistingIngredients(new String[] {"butter", "banana", "milk"});
     }
 }
