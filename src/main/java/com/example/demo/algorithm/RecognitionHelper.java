@@ -29,6 +29,9 @@ public class RecognitionHelper implements IRecognitionHelper {
             System.out.println("Empty body response!!!");
             return new ExistingIngredients();
         }
+
+        System.out.println("Got ingredients : " + body);
+
         String[] parts = body.split(",");
         List<String> strings = Arrays.stream(parts)
                 .map(s -> s.replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", ""))

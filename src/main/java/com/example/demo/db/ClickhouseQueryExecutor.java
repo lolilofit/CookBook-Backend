@@ -34,6 +34,7 @@ public class ClickhouseQueryExecutor {
                 }
             }
         }
+        System.out.println("Found recipes size = " + result.size());
         return result;
     }
 
