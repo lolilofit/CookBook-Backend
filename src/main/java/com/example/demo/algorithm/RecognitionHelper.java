@@ -9,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class RecognitionHelper implements IRecognitionHelper {
     private static final String url = "http://localhost:5000/food";
@@ -19,8 +22,20 @@ public class RecognitionHelper implements IRecognitionHelper {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.IMAGE_JPEG);
         HttpEntity<byte[]> entity = new HttpEntity<>(image, header);
-        HttpEntity<ExistingIngredients> response = restTemplate.exchange(url, HttpMethod.POST, entity, ExistingIngredients.class);
-        return response.getBody();
+        HttpEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+
+        String body = response.getBody();
+        if (body == null) {
+            System.out.println("Empty body response!!!");
+            return new ExistingIngredients();
+        }
+        String[] parts = body.split(",");
+        List<String> strings = Arrays.stream(parts)
+                .map(s -> s.replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", ""))
+                .map(String::trim)
+                .filter(s -> !s.isBlank())
+                .toList();
+        return new ExistingIngredients(strings.toArray(new String[0]));
 //        return new ExistingIngredients(new String[] {"butter", "banana", "milk"});
     }
 }

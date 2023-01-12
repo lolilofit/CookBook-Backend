@@ -26,14 +26,11 @@ public class MainEndpoint {
     private IRecipePicker recipePicker;
 
     @RequestMapping(value = "/main", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Recipes> getRecipes(@RequestBody byte[] image) throws SQLException {
+    public Recipe[] getRecipes(@RequestBody byte[] image) throws SQLException {
         System.out.println("See request...");
         ExistingIngredients existingIngredients = recognitionHelper.recognizeIngredients(image);
         Recipes recipes = recipePicker.pickRecipes(existingIngredients, maxRecipesNumber);
         System.out.println("Send response");
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(recipes);
+        return recipes.getRecipes();
     }
 }
