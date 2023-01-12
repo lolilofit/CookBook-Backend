@@ -17,7 +17,7 @@ public class RecognitionHelper implements IRecognitionHelper {
     public ExistingIngredients recognizeIngredients(byte[] image) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.IMAGE_PNG);
+        header.setContentType(MediaType.IMAGE_JPEG);
         HttpEntity<byte[]> entity = new HttpEntity<>(image, header);
         HttpEntity<ExistingIngredients> response = restTemplate.exchange(url, HttpMethod.POST, entity, ExistingIngredients.class);
         return response.getBody();
