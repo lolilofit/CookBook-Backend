@@ -40,16 +40,21 @@ public class ClickhouseQueryExecutor {
 
     private static String buildRequest(String[] ingredients, int resultSize) {
         StringBuilder requestBuilder = new StringBuilder();
-        requestBuilder.append("SELECT * FROM recipes WHERE");
-        requestBuilder.append(" has(NER, '");
+        requestBuilder.append("select length(arrayIntersect(NER, [");
+
+        requestBuilder.append("'");
         requestBuilder.append(ingredients[0]);
-        requestBuilder.append("')");
+        requestBuilder.append("'");
+
         for (int i = 1; i < ingredients.length; i++) {
-            requestBuilder.append(" AND has(NER, '");
+            requestBuilder.append(", '");
             requestBuilder.append(ingredients[i]);
-            requestBuilder.append("')");
+            requestBuilder.append("'");
         }
-        requestBuilder.append(" LIMIT ");
+        requestBuilder.append("])) as m, title, ingredients, directions, link, source, NER " +
+                "from default.recipes " +
+                "where m > 0 " +
+                "order by m desc limit ");
         requestBuilder.append(resultSize);
         requestBuilder.append(";");
         return requestBuilder.toString();
