@@ -19,7 +19,7 @@ public class Ingredient {
         this.unit = unit;
     }
 
-    public String getName(String name, float amount, String unit) {
+    public String getName() {
         return name;
     }
 
